@@ -1,0 +1,26 @@
+{
+    "name": "strasny-lada/dir-sync",
+    "type": "symfony-bundle",
+    "description": "A simple library for directory synchronization by a given JSON string with an option of a simple actions.",
+    "keywords": ["sync", "json", "task", "symfony"],
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Tomáš Vítek",
+            "email": "vitekt@email.cz"
+        }
+    ],
+    "minimum-stability": "RC",
+    "prefer-stable": true,
+    "require": {
+        "symfony/framework-bundle": ">=2.6",
+        "php": ">=7.0"
+    },
+    "require-dev": {
+    },
+    "suggest": {
+    },
+    "autoload": {
+        "psr-4": { "StrasnyLada\\DirSyncBundle\\": "" }
+    }
+}
