@@ -4,10 +4,7 @@
     "keywords": ["sync", "json", "task"],
     "license": "MIT",
     "authors": [
-        {
-            "name": "Tomáš Vítek",
-            "email": "vitekt@email.cz"
-        }
+        { "name": "Tomáš Vítek" }
     ],
     "require": {
         "ext-json": "*",
