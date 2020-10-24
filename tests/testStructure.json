@@ -1,0 +1,15 @@
+{
+  "src": {
+    "actions": null
+  },
+  "tests": {
+    "tmp": null
+  },
+  "vendor": false,
+  "example": {
+    "subDirOfExample":  {
+      "#actionClassName": "stringParams",
+    },
+    "#copy": ["../src", "./"]
+  }
+}
