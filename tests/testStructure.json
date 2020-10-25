@@ -1,15 +1,19 @@
 {
+  "app": {
+    "web":  {
+        "#copy": ["../src/","./"]
+    },
+    "#copy": ["../src","./"]
+  },
+  "log": {
+    "apache": null,
+    "app":    null
+  },
   "src": {
     "actions": null
   },
   "tests": {
     "tmp": null
   },
-  "vendor": false,
-  "example": {
-    "subDirOfExample":  {
-      "#actionClassName": "stringParams",
-    },
-    "#copy": ["../src", "./"]
-  }
+  "vendor": false
 }
