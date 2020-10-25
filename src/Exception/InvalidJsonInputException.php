@@ -10,13 +10,13 @@ namespace StrasnyLada\DirSync\Exception;
 
 use Throwable;
 
-class InvalidJsonInputExceptionInterface extends \Exception implements ExceptionInterface
+class InvalidJsonInputException extends \Exception implements ExceptionInterface
 {
     /** @var string */
     protected $message = 'Json "%s" is invalid';
 
     /**
-     * InvalidJsonInputExceptionInterface constructor.
+     * InvalidJsonInputException constructor.
      * @param string $jsonInput
      * @param int $code
      * @param Throwable|null $previous

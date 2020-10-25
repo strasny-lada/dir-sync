@@ -10,13 +10,13 @@ namespace StrasnyLada\DirSync\Exception;
 
 use Throwable;
 
-final class FileDoesNotExistExceptionInterface extends \Exception implements ExceptionInterface
+final class FileDoesNotExistException extends \Exception implements ExceptionInterface
 {
     /** @var string */
     protected $message = 'File %s does not exist';
 
     /**
-     * FileDoesNotExistExceptionInterface constructor.
+     * FileDoesNotExistException constructor.
      * @param string $filePath
      * @param int $code
      * @param Throwable|null $previous

@@ -10,13 +10,13 @@ namespace StrasnyLada\DirSync\Exception;
 
 use Throwable;
 
-final class DirectoryDoesNotExistExceptionInterface extends \Exception implements ExceptionInterface
+final class DirectoryDoesNotExistException extends \Exception implements ExceptionInterface
 {
     /** @var string */
     protected $message = 'Directory %s does not exist';
 
     /**
-     * DirectoryDoesNotExistExceptionInterface constructor.
+     * DirectoryDoesNotExistException constructor.
      * @param string $dirPath
      * @param int $code
      * @param Throwable|null $previous
