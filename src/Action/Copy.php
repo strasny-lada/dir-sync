@@ -49,11 +49,15 @@ class Copy extends ActionBase
             if (
                 $item->isDir()
                 &&
+                !file_exists($itemDstPath)
+                &&
                 !$this->mkdir($itemDstPath)
             ) {
                 throw new UnableToCreateDirectoryException($itemDstPath);
             } elseif (
                 !$item->isDir()
+                &&
+                !file_exists($itemDstPath)
                 &&
                 !copy($item->getPathname(), $itemDstPath)
             ) {
@@ -114,29 +118,5 @@ class Copy extends ActionBase
             $this->dstPath = $this->getAbsolutePath($this->parameters[1]);
         }
         return $this->dstPath;
-    }
-
-    /**
-     * Collect context path with directory path
-     *
-     * @param string $relativePath
-     * @return string
-     */
-    private function getAbsolutePath(string $relativePath)
-    {
-        // filter out slash on the path beginning
-        $relativePath = ltrim($relativePath, DIRECTORY_SEPARATOR);
-        if (strpos($relativePath, '.' . DIRECTORY_SEPARATOR) === 0) {
-            $relativePath = substr($relativePath, 2);
-        }
-
-        // collect absolute path
-        $path = $this->path;
-        if ($relativePath) {
-            $path .= DIRECTORY_SEPARATOR;
-            $path .= $relativePath;
-        }
-
-        return $path;
     }
 }

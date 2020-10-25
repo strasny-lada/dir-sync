@@ -50,6 +50,30 @@ abstract class ActionBase implements ActionInterface
     }
 
     /**
+     * Collect context path with directory path
+     *
+     * @param string $relativePath
+     * @return string
+     */
+    protected function getAbsolutePath(string $relativePath)
+    {
+        // filter out slash on the path beginning
+        $relativePath = ltrim($relativePath, DIRECTORY_SEPARATOR);
+        if (strpos($relativePath, '.' . DIRECTORY_SEPARATOR) === 0) {
+            $relativePath = substr($relativePath, 2);
+        }
+
+        // collect absolute path
+        $path = $this->path;
+        if ($relativePath) {
+            $path .= DIRECTORY_SEPARATOR;
+            $path .= $relativePath;
+        }
+
+        return $path;
+    }
+
+    /**
      * @param string $dirPath Absolute directory path
      * @param int $permissions Numeric directory permissions
      * @return bool
