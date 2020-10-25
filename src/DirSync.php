@@ -14,10 +14,10 @@ class DirSync extends DirSyncBase
 {
     /**
      * @param array $options [optional] Additional options for the directory sync process
-     * @param array $actions [optional] Action classes allowed within sync process
+     * @param array $allowedActionClasses [optional] Action classes allowed within sync process
      * @return DirSyncInterface
      */
-    public function sync($options = [], $actions = [])
+    public function sync($options = [], $allowedActionClasses = [])
     {
         try {
             $syncStructure = new SyncStructure();
@@ -32,7 +32,7 @@ class DirSync extends DirSyncBase
             $syncActions = new SyncActions();
             $syncActions->setRootDir($this->getRootDir());
             $syncActions->setJsonInput($this->getJsonInput());
-            $syncActions->sync($options, $actions);
+            $syncActions->sync($options, $allowedActionClasses);
         } catch (ExceptionInterface $e) {
             error_log($e->getMessage());
         }

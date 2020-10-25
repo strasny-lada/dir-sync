@@ -11,11 +11,25 @@ namespace StrasnyLada\DirSync\Action;
 interface ActionInterface
 {
     /**
-     * Process the action
+     * Run the action
      *
      * @return ActionInterface
      */
     public function run();
+
+    /**
+     * Validate action (parameters, ...)
+     *
+     * @return void
+     */
+    public function validate();
+
+    /**
+     * Process the action
+     *
+     * @return void
+     */
+    public function process();
 
     /**
      * Action path in the structure

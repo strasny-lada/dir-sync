@@ -1,9 +1,9 @@
 {
   "app": {
     "web":  {
-        "#copy": ["../src/","./"]
+        "#copy": ["../../log","./"]
     },
-    "#copy": ["../src","./"]
+    "#copy": ["../src/","./"]
   },
   "log": {
     "apache": null,

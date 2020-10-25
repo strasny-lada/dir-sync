@@ -13,7 +13,7 @@ use Throwable;
 class InvalidJsonInputException extends \Exception implements ExceptionInterface
 {
     /** @var string */
-    protected $message = 'Json "%s" is invalid';
+    protected $message = 'Invalid JSON "%s"';
 
     /**
      * InvalidJsonInputException constructor.

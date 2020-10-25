@@ -44,7 +44,7 @@ abstract class DirSyncBase implements DirSyncInterface
             throw new DirectoryDoesNotExistException($path);
         }
 
-        $this->rootDir = $path;
+        $this->rootDir = rtrim($path, DIRECTORY_SEPARATOR);
 
         return $this;
     }

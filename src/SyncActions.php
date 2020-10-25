@@ -19,35 +19,49 @@ final class SyncActions extends DirSyncBase
 {
     /**
      * @param array $options [optional] Additional options for the directory sync process
-     * @param array $actions [optional] Action classes allowed within sync process
+     * @param array $allowedActionClasses [optional] Action classes allowed within sync process
      * @return DirSyncInterface
      */
-    public function sync($options = [], $actions = [])
+    public function sync($options = [], $allowedActionClasses = [])
     {
         $options = $options ?: [
             DirSync::SYNC_ACTIONS_ONLY,
         ];
 
         if (in_array(DirSync::SYNC_ACTIONS_ONLY, $options)) {
-            try {
-                $jsonActions = $this->getJsonActions();
-            } catch (ExceptionInterface $e) {
-                error_log($e->getMessage());
-                $jsonActions = [];
-            }
-
-            if ($actions) {
-                $jsonActions = array_filter($jsonActions, function (ActionInterface  $action) use ($actions){
-                    return in_array(get_class($action), $actions);
-                });
-            }
-
-            foreach($jsonActions as $action) {
-                $action->run();
-            }
+            $this->runActions($allowedActionClasses);
         }
 
         return $this;
+    }
+
+    /**
+     * @param array $allowedActionClasses
+     */
+    private function runActions(array $allowedActionClasses)
+    {
+        try {
+            $actions = $this->fetchActions();
+        } catch (ExceptionInterface $e) {
+            error_log($e->getMessage());
+            $actions = [];
+        }
+
+        // filter actions by allowed classes
+        if ($allowedActionClasses) {
+            $actions = array_filter($actions, function (ActionInterface  $action) use ($allowedActionClasses){
+                return in_array(get_class($action), $allowedActionClasses);
+            });
+        }
+
+        // run actions
+        foreach($actions as $action) {
+            try {
+                $action->run();
+            } catch (ExceptionInterface $e) {
+                error_log($e->getMessage());
+            }
+        }
     }
 
     /**
@@ -55,8 +69,9 @@ final class SyncActions extends DirSyncBase
      * @throws ActionDoesNotExistException
      * @throws InvalidJsonInputException
      */
-    private function getJsonActions()
+    private function fetchActions()
     {
+        // fetch structure
         $structure = json_decode($this->jsonInput);
         if (!$structure) {
             throw new InvalidJsonInputException($this->jsonInput);
@@ -76,7 +91,6 @@ final class SyncActions extends DirSyncBase
         return array_map(function ($parameters, $path) {
             // divide directory path and action configuration
             list($directoryPath, $actionName) = explode(self::PREFIX_ACTION, $path);
-
             $directoryPath = rtrim($directoryPath, DIRECTORY_SEPARATOR);
 
             // find action class

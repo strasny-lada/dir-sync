@@ -17,6 +17,17 @@ abstract class ActionBase implements ActionInterface
     protected $parameters = [];
 
     /**
+     * @return ActionInterface
+     */
+    public function run()
+    {
+        $this->validate();
+        $this->process();
+
+        return $this;
+    }
+
+    /**
      * @param string $path
      * @return ActionInterface
      */
@@ -36,5 +47,18 @@ abstract class ActionBase implements ActionInterface
         $this->parameters = $parameters;
 
         return $this;
+    }
+
+    /**
+     * @param string $dirPath Absolute directory path
+     * @param int $permissions Numeric directory permissions
+     * @return bool
+     */
+    protected function mkdir(string $dirPath, $permissions = 0755)
+    {
+        $previousUmask = umask(0);
+        $ret = mkdir($dirPath, $permissions, true);
+        umask($previousUmask);
+        return $ret;
     }
 }

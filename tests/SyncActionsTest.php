@@ -15,7 +15,7 @@ use StrasnyLada\DirSync\Exception\ExceptionInterface;
 /**
  * Class ActionsSyncTest
  * @package StrasnyLada\DirSyncBase
- * @covers StrasnyLada\DirSync\DirSync
+ * @covers StrasnyLada\DirSync\SyncActions
  */
 final class SyncActionsTest extends TestCase
 {
@@ -33,12 +33,18 @@ final class SyncActionsTest extends TestCase
         $this->dirSync->mrProper(self::getStructurePath());
     }
 
+    /**
+     * @covers ::runActions
+     * @covers StrasnyLada\DirSync\Action\Copy
+     */
     public function testCopyActions()
     {
         $dst = self::getStructurePath();
 
         // create structure
         $this->createStructure();
+
+        shell_exec(sprintf('cp -r %s %s', __DIR__ . '/testStructure/', __DIR__ . '/tmp'));
 
         // run actions
         try {
@@ -52,7 +58,14 @@ final class SyncActionsTest extends TestCase
             print($e->getMessage());
         }
 
+        $this->assertDirectoryExists($dst . '/app/web/log/apache');
+        $this->assertFileExists($dst . '/app/web/log/apache/error.log');
+        $this->assertDirectoryExists($dst . '/app/web/log/app/frontend');
+        $this->assertFileExists($dst . '/app/web/log/app/app.log');
 
+        $this->assertFileExists($dst . '/app/data.txt');
+        $this->assertFileExists($dst . '/app/controller/TestController.php');
+        $this->assertDirectoryExists($dst . '/app/validator');
     }
 
     private function createStructure()
