@@ -60,9 +60,9 @@ interface DirSyncInterface
      *  \StrasnyLada\DirSync\DirSync::SYNC_ACTIONS_ONLY - just run the action but do
      *  not change the directory tree in any way;<br>
      *
-     * @param mixed [optional] Additional options for the directory sync process
+     * @param array [optional] Additional options for the directory sync process
      * @return self|array
      * @throws ExceptionInterface
      */
-    public function sync($options=null);
+    public function sync($options=[]);
 }
