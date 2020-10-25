@@ -14,7 +14,7 @@ use StrasnyLada\DirSync\Exception\ExceptionInterface;
 /**
  * Class SyncStructureTest
  * @package StrasnyLada\DirSync
- * @covers StrasnyLada\DirSync\DirSync
+ * @covers StrasnyLada\DirSync\SyncStructure
  */
 final class SyncStructureTest extends TestCase
 {
@@ -32,6 +32,9 @@ final class SyncStructureTest extends TestCase
         $this->dirSync->mrProper(self::getStructurePath());
     }
 
+    /**
+     * @covers ::create
+     */
     public function testCreateSyncIntoEmptyDir()
     {
         $dst = self::getStructurePath();
@@ -54,6 +57,9 @@ final class SyncStructureTest extends TestCase
         $this->assertDirectoryNotExists($dst . '/app/#copy');
     }
 
+    /**
+     * @covers ::create
+     */
     public function testCreateSyncIntoNonEmptyDir()
     {
         $dst = self::getStructurePath();
@@ -78,6 +84,9 @@ final class SyncStructureTest extends TestCase
         $this->assertDirectoryExists($dst . '/src/actions');
     }
 
+    /**
+     * @covers ::remove
+     */
     public function testRemoveSync()
     {
         $dst = self::getStructurePath();
@@ -108,6 +117,10 @@ final class SyncStructureTest extends TestCase
         $this->assertFileExists($dst . '/src/controller/TestController.php');
     }
 
+    /**
+     * @covers ::create
+     * @covers ::remove
+     */
     public function testSync()
     {
         $dst = self::getStructurePath();

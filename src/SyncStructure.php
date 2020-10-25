@@ -57,10 +57,10 @@ final class SyncStructure extends DirSyncBase
      */
     private function create()
     {
-        $srcData = $this->getJsonPaths();
-        $dstData = $this->getCurrentPaths();
+        $srcData = $this->fetchStructure();
+        $dstData = $this->fetchRootDirectoryList();
 
-        // create directories missing by JSON structure
+        // create directories missing according to the JSON structure
         $pathsToCreate = array_diff(array_keys($srcData), $dstData);
         foreach ($pathsToCreate as $path) {
             if (!$this->mkdir($this->getRootDir() . DIRECTORY_SEPARATOR . $path)) {
@@ -68,7 +68,7 @@ final class SyncStructure extends DirSyncBase
             }
         }
 
-        // clean structure
+        // clean directory structure
         foreach($srcData as $path => $value) {
             if ($value === self::FLAG_CREATE_EMPTY) {
                 // directory should be cleaned
@@ -86,8 +86,8 @@ final class SyncStructure extends DirSyncBase
      */
     private function remove()
     {
-        $srcData = $this->getJsonPaths();
-        $dstData = $this->getCurrentPaths();
+        $srcData = $this->fetchStructure();
+        $dstData = $this->fetchRootDirectoryList();
 
         // clean structure
         foreach($srcData as $path => $value) {
@@ -127,12 +127,12 @@ final class SyncStructure extends DirSyncBase
     }
 
     /**
-     * Transform JSON structure into flat structure in the array
+     * Transform the JSON structure into a flat structure in the array
      *
      * @return array
      * @throws InvalidJsonInputException
      */
-    private function getJsonPaths()
+    private function fetchStructure()
     {
         $structure = json_decode($this->jsonInput);
         if (!$structure) {
@@ -145,11 +145,11 @@ final class SyncStructure extends DirSyncBase
         $flatStructure = (new TreeToFlatDirectoryStructureTransformer())->transform($treeStructure);
 
         // filter out actions
-        $directoryPaths = [];
+        $paths = [];
         foreach ($flatStructure as $path => $value) {
             // simple directory sync
             if (strpos($path, self::PREFIX_ACTION) === false) {
-                $directoryPaths[$path] = $value === '' ? self::FLAG_IGNORE_CONTENT : $value;
+                $paths[$path] = $value === '' ? self::FLAG_IGNORE_CONTENT : $value;
             } // directory connected with action
             else {
                 $pathChunks = [];
@@ -160,11 +160,11 @@ final class SyncStructure extends DirSyncBase
                     // create subdirectories until an action is identified
                     $pathChunks[] = $directory;
                 }
-                $directoryPaths[implode(DIRECTORY_SEPARATOR, $pathChunks)] = self::FLAG_IGNORE_CONTENT;
+                $paths[implode(DIRECTORY_SEPARATOR, $pathChunks)] = self::FLAG_IGNORE_CONTENT;
             }
         }
 
-        return $directoryPaths;
+        return $paths;
     }
 
     /**
@@ -172,11 +172,8 @@ final class SyncStructure extends DirSyncBase
      *
      * @return array
      */
-    private function getCurrentPaths()
+    private function fetchRootDirectoryList()
     {
-        $paths = [];
-        $basePathLength = mb_strlen($this->getRootDir(), 'utf-8');
-
         // scan content of the root directory
         $iterator = new \RecursiveIteratorIterator(
             new \RecursiveDirectoryIterator(
@@ -186,12 +183,15 @@ final class SyncStructure extends DirSyncBase
             \RecursiveIteratorIterator::CHILD_FIRST
         );
 
-        // iterate items and store directories
+        $paths = [];
+        $basePathLength = mb_strlen($this->getRootDir(), 'utf-8');
+
+        // store directories into the array
         /** @var \SplFileInfo $item */
         foreach ($iterator as $item) {
             if ($item->isDir()) {
                 // store relative path under root dir
-                $paths[] = substr($item->getPathname(), $basePathLength + 1);
+                $paths[] = ltrim(substr($item->getPathname(), $basePathLength), DIRECTORY_SEPARATOR);
             }
         }
 
