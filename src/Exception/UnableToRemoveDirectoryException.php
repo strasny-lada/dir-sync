@@ -10,7 +10,7 @@ namespace StrasnyLada\DirSync\Exception;
 
 use Throwable;
 
-class UnableToRemoveDirectoryException extends \Exception implements ExceptionInterface
+final class UnableToRemoveDirectoryException extends \Exception implements ExceptionInterface
 {
     /** @var string */
     protected $message = 'Unable to remove directory "%s"';

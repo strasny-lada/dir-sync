@@ -10,7 +10,7 @@ namespace StrasnyLada\DirSync\Exception;
 
 use Throwable;
 
-class InvalidActionParametersException extends \Exception implements ExceptionInterface
+final class InvalidActionParametersException extends \Exception implements ExceptionInterface
 {
     /** @var string */
     protected $message = 'Invalid action parameters "%s"';

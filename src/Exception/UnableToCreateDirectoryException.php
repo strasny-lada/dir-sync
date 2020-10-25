@@ -10,7 +10,7 @@ namespace StrasnyLada\DirSync\Exception;
 
 use Throwable;
 
-class UnableToCreateDirectoryException extends \Exception implements ExceptionInterface
+final class UnableToCreateDirectoryException extends \Exception implements ExceptionInterface
 {
     /** @var string */
     protected $message = 'Unable to create directory "%s"';

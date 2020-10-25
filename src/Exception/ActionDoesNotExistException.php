@@ -10,7 +10,7 @@ namespace StrasnyLada\DirSync\Exception;
 
 use Throwable;
 
-class ActionDoesNotExistException extends \Exception implements ExceptionInterface
+final class ActionDoesNotExistException extends \Exception implements ExceptionInterface
 {
     /** @var string */
     protected $message = 'Action %s does not exist';
