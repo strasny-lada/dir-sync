@@ -47,7 +47,7 @@ class ScriptHandler
         $dirSync->sync($parameters[self::HANDLER_OPTIONS] ?? null);
 
         // render log messages
-        if ($parameters[self::HANDLER_VERBOSE]) {
+        if ($parameters[self::HANDLER_VERBOSE] ?? null) {
             $event->getIO()->write('DirSync messages:');
             if ($dirSync->getMessages()) {
                 foreach ($dirSync->getMessages() as $message) {
