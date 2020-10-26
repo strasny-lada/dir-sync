@@ -28,7 +28,7 @@ Parameters
 ============
 
 - root-dir - absolute path to sync target directory
-- config-file - [optional] absolute path to JSON file with synchronized structure
+- config-file - [optional] absolute path to JSON file with structure to be synchronized
 - config-json - [optional] structure in JSON format to be synchronized
 - verbose - [optional] boolean parameter to render synchronization log
 - options - [optional] options separated by comma for the directory sync process:
