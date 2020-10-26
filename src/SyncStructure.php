@@ -63,8 +63,12 @@ final class SyncStructure extends DirSyncBase
         // create directories missing according to the JSON structure
         $pathsToCreate = array_diff(array_keys($srcData), $dstData);
         foreach ($pathsToCreate as $path) {
-            if (!$this->mkdir($this->getRootDir() . DIRECTORY_SEPARATOR . $path)) {
-                throw new UnableToCreateDirectoryException($path);
+            $absolutePath = $this->getRootDir() . DIRECTORY_SEPARATOR . $path;
+            if (!file_exists($absolutePath)) {
+                $this->addMessage(sprintf('Create directory %s', $absolutePath));
+                if (!$this->mkdir($absolutePath)) {
+                    throw new UnableToCreateDirectoryException($path);
+                }
             }
         }
 
@@ -73,8 +77,11 @@ final class SyncStructure extends DirSyncBase
             if ($value === self::FLAG_CREATE_EMPTY) {
                 // directory should be cleaned
                 $absolutePath = $this->getRootDir() . DIRECTORY_SEPARATOR . $path;
-                if (file_exists($absolutePath) && !$this->mrProper($absolutePath)) {
-                    throw new UnableToRemoveDirectoryException($path);
+                if (file_exists($absolutePath)) {
+                    $this->addMessage(sprintf('Clean directory %s', $absolutePath));
+                    if (!$this->mrProper($absolutePath)) {
+                        throw new UnableToRemoveDirectoryException($path);
+                    }
                 }
             }
         }
@@ -94,8 +101,11 @@ final class SyncStructure extends DirSyncBase
             if ($value === self::FLAG_CREATE_EMPTY) {
                 // directory should be cleaned
                 $absolutePath = $this->getRootDir() . DIRECTORY_SEPARATOR . $path;
-                if (file_exists($absolutePath) && !$this->mrProper($absolutePath)) {
-                    throw new UnableToRemoveDirectoryException($path);
+                if (file_exists($absolutePath)) {
+                    $this->addMessage(sprintf('Clean directory %s', $absolutePath));
+                    if (!$this->mrProper($absolutePath)) {
+                        throw new UnableToRemoveDirectoryException($path);
+                    }
                 }
             }
         }
@@ -120,8 +130,11 @@ final class SyncStructure extends DirSyncBase
             }
 
             // clear directory if it's candidate
-            if ($isCandidateToRemove && !$this->mrProper($absolutePath, true)) {
-                throw new UnableToRemoveDirectoryException($path);
+            if ($isCandidateToRemove) {
+                $this->addMessage(sprintf('Remove directory %s', $absolutePath));
+                if (!$this->mrProper($absolutePath, true)) {
+                    throw new UnableToRemoveDirectoryException($path);
+                }
             }
         }
     }

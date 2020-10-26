@@ -50,18 +50,20 @@ class Copy extends ActionBase
                 $item->isDir()
                 &&
                 !file_exists($itemDstPath)
-                &&
-                !$this->mkdir($itemDstPath)
             ) {
-                throw new UnableToCreateDirectoryException($itemDstPath);
+                $this->addMessage(sprintf('Copy action: create directory %s', $itemDstPath));
+                if (!$this->mkdir($itemDstPath)) {
+                    throw new UnableToCreateDirectoryException($itemDstPath);
+                }
             } elseif (
                 !$item->isDir()
                 &&
                 !file_exists($itemDstPath)
-                &&
-                !copy($item->getPathname(), $itemDstPath)
             ) {
-                throw new UnableToCreateFileException($itemDstPath);
+                $this->addMessage(sprintf('Copy action: copy file from %s to %s', $item->getPathname(), $itemDstPath));
+                if (!copy($item->getPathname(), $itemDstPath)) {
+                    throw new UnableToCreateFileException($itemDstPath);
+                }
             }
         }
     }

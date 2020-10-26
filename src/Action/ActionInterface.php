@@ -46,4 +46,19 @@ interface ActionInterface
      * @return ActionInterface
      */
     public function setParameters(array $parameters);
+
+    /**
+     * Store simple action process message
+     *
+     * @param string $message
+     * @return ActionInterface
+     */
+    public function addMessage(string $message);
+
+    /**
+     * Returns verbose messages with action process describe
+     *
+     * @return string[]
+     */
+    public function getMessages();
 }

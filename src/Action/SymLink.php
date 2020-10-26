@@ -16,20 +16,22 @@ class SymLink extends ActionBase
     /** @var string */
     private $srcPath;
 
+    /** @var string */
+    private $dstPath;
+
     /**
      * @throws UnableToCreateLinkException
      */
     public function process()
     {
         $srcPath = $this->getSourcePath();
-        $dstPath = $this->path . DIRECTORY_SEPARATOR . basename($srcPath);
+        $dstPath = $this->getDestinationPath();
 
-        if (
-            !file_exists($dstPath)
-            &&
-            !symlink($srcPath, $dstPath)
-        ) {
-            throw new UnableToCreateLinkException($dstPath);
+        if (!file_exists($dstPath)) {
+            $this->addMessage(sprintf('SymLink action: create symlink from %s to %s', $srcPath, $dstPath));
+            if (!symlink($srcPath, $dstPath)) {
+                throw new UnableToCreateLinkException($dstPath);
+            }
         }
     }
 
@@ -69,5 +71,16 @@ class SymLink extends ActionBase
             $this->srcPath = $this->getAbsolutePath($this->parameters[0]);
         }
         return $this->srcPath;
+    }
+
+    /**
+     * @return string
+     */
+    private function getDestinationPath()
+    {
+        if (!$this->dstPath) {
+            $this->dstPath = $this->path . DIRECTORY_SEPARATOR . basename($this->getSourcePath());
+        }
+        return $this->dstPath;
     }
 }

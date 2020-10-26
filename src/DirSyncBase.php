@@ -26,6 +26,9 @@ abstract class DirSyncBase implements DirSyncInterface
     /** @var string */
     protected $jsonInput;
 
+    /** @var string[] */
+    protected $messages = [];
+
     /**
      * DirSyncBase constructor.
      */
@@ -56,8 +59,8 @@ abstract class DirSyncBase implements DirSyncInterface
     {
         if ($this->rootDir) {
             return $this->rootDir;
-        } elseif (($rootDir = constant('__root__'))) {
-            return (string)$rootDir;
+        } elseif (defined('__root__')) {
+            return (string)__root__;
         } else {
             return __DIR__;
         }
@@ -106,6 +109,36 @@ abstract class DirSyncBase implements DirSyncInterface
     public function getJsonInput()
     {
         return $this->jsonInput;
+    }
+
+    /**
+     * @param string $message
+     * @return DirSyncInterface
+     */
+    public function addMessage(string $message)
+    {
+        $this->messages[] = $message;
+
+        return $this;
+    }
+
+    /**
+     * @param string[] $messages
+     * @return DirSyncInterface
+     */
+    public function addMessages(array $messages)
+    {
+        $this->messages = array_merge($this->messages, $messages);
+
+        return $this;
+    }
+
+    /**
+     * @return string[]
+     */
+    public function getMessages()
+    {
+        return $this->messages;
     }
 
     /**

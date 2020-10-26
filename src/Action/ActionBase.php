@@ -16,6 +16,9 @@ abstract class ActionBase implements ActionInterface
     /** @var array */
     protected $parameters = [];
 
+    /** @var string[] */
+    protected $messages = [];
+
     /**
      * @return ActionInterface
      */
@@ -49,6 +52,34 @@ abstract class ActionBase implements ActionInterface
         return $this;
     }
 
+    /**
+     * @param string $message
+     * @return ActionInterface
+     */
+    public function addMessage(string $message)
+    {
+        $this->messages[] = $message;
+
+        return $this;
+    }
+
+    /**
+     * @return string[]
+     */
+    public function getMessages()
+    {
+        return $this->messages;
+    }
+
+    /**
+     * @return false|string
+     */
+    public function getBaseClassName()
+    {
+        $className = get_class($this);
+        return substr($className, strrpos($className, '\\') + 1);
+    }
+    
     /**
      * Collect context path with directory path
      *

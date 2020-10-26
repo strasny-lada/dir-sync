@@ -57,7 +57,10 @@ final class SyncActions extends DirSyncBase
         // run actions
         foreach($actions as $action) {
             try {
+                $this->addMessage(sprintf('%s action stared', $action->getBaseClassName()));
                 $action->run();
+                $this->addMessages($action->getMessages());
+                $this->addMessage(sprintf('%s action finished', $action->getBaseClassName()));
             } catch (ExceptionInterface $e) {
                 error_log($e->getMessage());
             }

@@ -24,15 +24,13 @@ class DirSync extends DirSyncBase
             $syncStructure->setRootDir($this->getRootDir());
             $syncStructure->setJsonInput($this->getJsonInput());
             $syncStructure->sync($options);
-        } catch (ExceptionInterface $e) {
-            error_log($e->getMessage());
-        }
+            $this->addMessages($syncStructure->getMessages());
 
-        try {
             $syncActions = new SyncActions();
             $syncActions->setRootDir($this->getRootDir());
             $syncActions->setJsonInput($this->getJsonInput());
             $syncActions->sync($options, $allowedActionClasses);
+            $this->addMessages($syncActions->getMessages());
         } catch (ExceptionInterface $e) {
             error_log($e->getMessage());
         }
