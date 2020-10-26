@@ -10,6 +10,7 @@ namespace StrasnyLada\DirSync;
 
 use PHPUnit\Framework\TestCase;
 use StrasnyLada\DirSync\Action\Copy;
+use StrasnyLada\DirSync\Action\SymLink;
 use StrasnyLada\DirSync\Exception\ExceptionInterface;
 
 /**
@@ -66,6 +67,35 @@ final class SyncActionsTest extends TestCase
         $this->assertFileExists($dst . '/app/data.txt');
         $this->assertFileExists($dst . '/app/controller/TestController.php');
         $this->assertDirectoryExists($dst . '/app/validator');
+    }
+
+    /**
+     * @covers ::runActions
+     * @covers StrasnyLada\DirSync\Action\SymLink
+     */
+    public function testSymLinkActions()
+    {
+        $dst = self::getStructurePath();
+
+        // create structure
+        $this->createStructure();
+
+        shell_exec(sprintf('cp -r %s %s', __DIR__ . '/testStructure/', __DIR__ . '/tmp'));
+
+        // run actions
+        try {
+            $this->dirSync
+                ->setRootDir($dst)
+                ->fromFile(self::getJsonInputFilePath())
+                ->sync(
+                    [DirSync::SYNC_ACTIONS_ONLY],
+                    [SymLink::class]);
+        } catch (ExceptionInterface $e) {
+            print($e->getMessage());
+        }
+
+        $this->assertFileExists($dst . '/src/apache');
+        $this->assertFileExists($dst . '/src/apache/access.log');
     }
 
     private function createStructure()

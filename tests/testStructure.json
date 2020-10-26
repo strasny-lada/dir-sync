@@ -10,7 +10,8 @@
     "app":    null
   },
   "src": {
-    "actions": null
+    "actions": null,
+    "#symLink": "../log/apache"
   },
   "tests": {
     "tmp": null
