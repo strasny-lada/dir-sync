@@ -23,6 +23,6 @@ final class InvalidJsonInputException extends \Exception implements ExceptionInt
      */
     public function __construct($jsonInput = "", $code = 0, Throwable $previous = null)
     {
-        parent::__construct(sprintf($this->message, (string)$jsonInput), $code, $previous);
+        parent::__construct(sprintf($this->message, $jsonInput ? (string)$jsonInput : 'not defined'), $code, $previous);
     }
 }
