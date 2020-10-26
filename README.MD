@@ -12,7 +12,7 @@ Installation
       composer require strasny-lada/dir-sync
       ```
 
-  2. Add script into composer.json if you would like to launch DirSync through Composer
+  1. Add script into composer.json if you would like to launch DirSync through Composer
 
       ```json
       {
@@ -24,7 +24,22 @@ Installation
       }
       ```
 
-  3. Launch DirSync through Composer
+Parameters
+============
+
+- root-dir - absolute path to sync target directory
+- config-file - [optional] absolute path to JSON file with synchronized structure
+- config-json - [optional] structure in JSON format to be synchronized
+- verbose - [optional] boolean parameter to render synchronization log
+- options - [optional] options separated by comma for the directory sync process:
+    - create - creating directories only
+    - remove - only removing directories
+    - actions - just run the action but do not change the directory tree in any way
+
+Launch
+============
+
+  1. Through Composer
 
       ```json
       {
@@ -42,7 +57,7 @@ Installation
       composer dir-sync parameters
       ```
 
-     or inside your application
+     possibly inside your application
 
       ```php
       $dirsync = new \StrasnyLada\DirSync\DirSync();
@@ -51,18 +66,7 @@ Installation
       $dirsync->sync([options]);
       ```
 
-  4. Where parameters should be
-    
-        - root-dir - absolute path to sync target directory
-        - config-file - [optional] absolute path to JSON file with synchronized structure
-        - config-json - [optional] structure in JSON format to be synchronized
-        - verbose - [optional] boolean parameter to render synchronization log
-        - options - [optional] options separated by comma for the directory sync process:
-            - create - creating directories only
-            - remove - only removing directories
-            - actions - just run the action but do not change the directory tree in any way
-
-  5. Examples of use
+  1. Examples of use
 
       ```json
       {
@@ -74,13 +78,9 @@ Installation
       }
       ```
 
-     or from command line
-
       ```sh
       composer dir-sync verbose=1 root-dir=/path/to/target config-file=/path/to/structure.json options=create,remove
       ```
-
-     or from command line
 
       ```php
       $dirsync = new \StrasnyLada\DirSync\DirSync();
