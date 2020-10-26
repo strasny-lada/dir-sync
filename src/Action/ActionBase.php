@@ -57,6 +57,12 @@ abstract class ActionBase implements ActionInterface
      */
     protected function getAbsolutePath(string $relativePath)
     {
+        if (!$relativePath
+            || $relativePath[0] === DIRECTORY_SEPARATOR
+        ) {
+            return $relativePath;
+        }
+
         // filter out slash on the path beginning
         $relativePath = ltrim($relativePath, DIRECTORY_SEPARATOR);
         if (strpos($relativePath, '.' . DIRECTORY_SEPARATOR) === 0) {
