@@ -98,7 +98,7 @@ final class SyncActionsTest extends TestCase
         $this->assertFileExists($dst . '/src/apache/access.log');
     }
 
-    public function testSync()
+    public function testAllActions()
     {
         $dst = self::getStructurePath();
 

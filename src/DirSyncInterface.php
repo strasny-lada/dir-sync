@@ -50,7 +50,6 @@ interface DirSyncInterface
      */
     public function getJsonInput();
 
-
     /**
      * Will begin the process of the synchronization.
      * The process can have the following options:

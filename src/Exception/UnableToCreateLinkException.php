@@ -10,7 +10,7 @@ namespace StrasnyLada\DirSync\Exception;
 
 use Throwable;
 
-class UnableToCreateLinkException extends \Exception implements ExceptionInterface
+final class UnableToCreateLinkException extends \Exception implements ExceptionInterface
 {
     /** @var string */
     protected $message = 'Unable to create link "%s"';
