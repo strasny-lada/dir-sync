@@ -98,6 +98,40 @@ final class SyncActionsTest extends TestCase
         $this->assertFileExists($dst . '/src/apache/access.log');
     }
 
+    public function testSync()
+    {
+        $dst = self::getStructurePath();
+
+        // create structure
+        $this->createStructure();
+
+        shell_exec(sprintf('cp -r %s %s', __DIR__ . '/testStructure/', __DIR__ . '/tmp'));
+
+        // run actions
+        try {
+            $this->dirSync
+                ->setRootDir($dst)
+                ->fromFile(self::getJsonInputFilePath())
+                ->sync(
+                    [DirSync::SYNC_ACTIONS_ONLY]
+                );
+        } catch (ExceptionInterface $e) {
+            print($e->getMessage());
+        }
+
+        $this->assertDirectoryExists($dst . '/app/web/log/apache');
+        $this->assertFileExists($dst . '/app/web/log/apache/error.log');
+        $this->assertDirectoryExists($dst . '/app/web/log/app/frontend');
+        $this->assertFileExists($dst . '/app/web/log/app/app.log');
+
+        $this->assertFileExists($dst . '/app/data.txt');
+        $this->assertFileExists($dst . '/app/controller/TestController.php');
+        $this->assertDirectoryExists($dst . '/app/validator');
+
+        $this->assertFileExists($dst . '/src/apache');
+        $this->assertFileExists($dst . '/src/apache/access.log');
+    }
+
     private function createStructure()
     {
         $dst = self::getStructurePath();
